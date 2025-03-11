@@ -4,7 +4,6 @@
  */
 package controlador;
 
-import java.util.List;
 import java.util.ArrayList;
 import modelo.Alumno;
 

@@ -6,10 +6,8 @@ package modelo;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import modelo.Carrera;
 
 /**
@@ -21,18 +19,16 @@ public class Materia {
     private String codigo;
     private String nombre;
     private int nroCuatrimestre;
-    private boolean obligatoria;
-    private Carrera carrera;
+    private Set<Carrera> carreras;
     private List<Materia> correlativas;
     public static int notaAprobarCursada = 6;
     public static int notaAprobarFinal = 4;
 
-    public Materia(String nombre, String codigo, int nroCuatrimestre, boolean obligatoria, Carrera carrera) {
+    public Materia(String nombre, String codigo, int nroCuatrimestre) {
         this.nombre = nombre;
         this.codigo = codigo;
         this.nroCuatrimestre = nroCuatrimestre;
-        this.obligatoria = obligatoria;
-        this.carrera = carrera;
+        this.carreras = new HashSet<Carrera>();
         this.correlativas = new ArrayList<Materia>();
     }
 
@@ -50,6 +46,14 @@ public class Materia {
         this.nombre = nombre;
     }
 
+    public Set<Carrera> getCarreras() {
+        return this.carreras;
+    }
+
+    public void setCarreras(Carrera carrera) {
+        this.carreras.add(carrera);
+    }
+
     public void agregarCorrelativa(Materia materia) {
         this.correlativas.add(materia);
     }
@@ -58,10 +62,6 @@ public class Materia {
         for (Materia materia : correlativas) {
             this.correlativas.add(materia);
         }
-    }
-
-    public boolean esObligatoria() {
-        return this.obligatoria;
     }
 
     public List<Materia> getCorrelativas() {
@@ -98,18 +98,6 @@ public class Materia {
         return this.nroCuatrimestre;
     }
 
-    public String getObligatoria() {
-        if (this.obligatoria) {
-            return "SI";
-        } else {
-            return "NO";
-        }
-    }
-
-    public String getCarrera() {
-        return this.carrera.toString();
-    }
-
     public String getPromocionable() {
         //por defecto no
         return "NO";
@@ -117,20 +105,6 @@ public class Materia {
 
     public int getNotaPromocion() {
         return 0;
-    }
-
-    public int getNotaAprobarCursada() {
-        return notaAprobarCursada;
-    }
-
-    public int getNotaAprobarFinal() {
-        return notaAprobarFinal;
-    }
-
-    public Set<Materia> convertirCursadasAMaterias(Set<Cursada> cursadas) {
-        return cursadas.stream()
-                .map(Cursada::getMateria) // Extrae la materia de cada cursada
-                .collect(Collectors.toSet()); // Devuelve un conjunto de materias
     }
 
 }

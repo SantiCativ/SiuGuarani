@@ -5,7 +5,6 @@
 package vista;
 
 import controlador.CarreraController;
-import controlador.InscripcionController;
 import controlador.MateriaController;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -40,12 +39,10 @@ public class DetailAlumno {
 
     private CarreraController carreraController;
     private MateriaController materiaController;
-    private InscripcionController inscripcionController;
     private Alumno alumno;
     private JTable tb;
 
     public DetailAlumno(MateriaController materia, CarreraController carrera, Alumno estudiante) {
-        inscripcionController = new InscripcionController();
         carreraController = carrera;
         materiaController = materia;
         alumno = estudiante;
@@ -55,7 +52,7 @@ public class DetailAlumno {
     private void initComponents() {
 
         // Obtener las carreras del alumno
-        List<Carrera> carrerasRealizadas = inscripcionController.obtenerCarrerasDeAlumno(alumno);
+        List<Carrera> carrerasRealizadas = alumno.getCarreras();
 
         // Crear el modal de información
         JDialog dialog = new JDialog((Frame) null, "Detalles del Alumno", true);
@@ -132,7 +129,7 @@ public class DetailAlumno {
 
     private void inscribirAlumnoEnCarrera(Alumno alumno, JComboBox<String> comboCarreras) {
         List<Carrera> carrerasDisponibles = carreraController.obtenerCarreras();
-        List<Carrera> carrerasAlumno = inscripcionController.obtenerCarrerasDeAlumno(alumno);
+        List<Carrera> carrerasAlumno = alumno.getCarreras();
 
         if (carrerasDisponibles.isEmpty()) {
             JOptionPane.showMessageDialog(null, "No hay carreras disponibles para inscripción.");
@@ -162,7 +159,7 @@ public class DetailAlumno {
                     }
 
                     // 🔹 **Inscribir y actualizar lista**
-                    inscripcionController.inscribirAlumnoEnCarrera(alumno, carrera);
+                    alumno.setCarrera(carrera);
                     JOptionPane.showMessageDialog(null, "Inscripción exitosa en " + carrera.getNombre());
 
                     // 🔄 **Actualizar el comboCarreras**

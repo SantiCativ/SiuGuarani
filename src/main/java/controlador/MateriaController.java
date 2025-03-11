@@ -22,14 +22,14 @@ public class MateriaController {
         listaMaterias.add(materia);
     }
 
-    public void agregarMateria(String nombre, String codigo, int nroCuatrimestre, boolean obligatoria, Carrera carrera, List<Materia> correlativas) {
-        Materia nuevaMateria = new Materia(nombre, codigo, nroCuatrimestre, obligatoria, carrera);
+    public void agregarMateria(String nombre, String codigo, int nroCuatrimestre, List<Materia> correlativas) {
+        Materia nuevaMateria = new Materia(nombre, codigo, nroCuatrimestre);
         nuevaMateria.agregarCorrelativa(correlativas);
         listaMaterias.add(nuevaMateria);
     }
 
-    public void agregarMateria(String nombre, String codigo, int nroCuatrimestre, boolean obligatoria, Carrera carrera, List<Materia> correlativas, int notaPromocion) {
-        Materia nuevaMateria = new MateriaPromocionable(nombre, codigo, nroCuatrimestre, obligatoria, carrera, notaPromocion);
+    public void agregarMateria(String nombre, String codigo, int nroCuatrimestre, List<Materia> correlativas, int notaPromocion) {
+        Materia nuevaMateria = new MateriaPromocionable(nombre, codigo, nroCuatrimestre, notaPromocion);
         nuevaMateria.agregarCorrelativa(correlativas);
         listaMaterias.add(nuevaMateria);
     }

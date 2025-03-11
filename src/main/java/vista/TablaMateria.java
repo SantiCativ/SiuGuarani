@@ -17,7 +17,6 @@ import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -28,7 +27,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
-import modelo.Carrera;
 import modelo.Materia;
 
 /**
@@ -44,7 +42,7 @@ public class TablaMateria extends JPanel {
 
     public TablaMateria(MateriaController materiaControllerr, CarreraController carreraControllerr) {
         materiaController = materiaControllerr;
-        carreraController=carreraControllerr;
+        carreraController = carreraControllerr;
         initComponents();
         mostrarMaterias();
     }
@@ -69,21 +67,19 @@ public class TablaMateria extends JPanel {
 
     private void mostrarMaterias() {
 
-        String[] columnas = {"Nombre", "codigo", "nro cuatrimestre", "obligatoria", "promocionable", "carrera"};
+        String[] columnas = {"Nombre", "codigo", "nro cuatrimestre", "promocionable"};
 
         ArrayList<Materia> listaMaterias = materiaController.obtenerMaterias();
-        Object[][] datos = new Object[listaMaterias.size()][6];
+        Object[][] datos = new Object[listaMaterias.size()][4];
 
         for (int i = 0; i < listaMaterias.size(); i++) {
             Materia materia = listaMaterias.get(i);
             datos[i][0] = materia.getNombre();
             datos[i][1] = materia.getCodigo();
             datos[i][2] = materia.getNroCuatrimestre();
-            datos[i][3] = materia.getObligatoria();
-            datos[i][4] = materia.getPromocionable();
-            datos[i][5] = materia.getCarrera();
+            datos[i][3] = materia.getPromocionable();
         }
-        
+
         tb.setModel(new javax.swing.table.DefaultTableModel(datos, columnas));
     }
 
@@ -122,13 +118,6 @@ public class TablaMateria extends JPanel {
 
         gbc.gridx = 0;
         gbc.gridy++;
-        panel.add(new JLabel("Obligatoria:"), gbc);
-        gbc.gridx = 1;
-        JComboBox<String> cbObligatoria = new JComboBox<>(new String[]{"Sí", "No"});
-        panel.add(cbObligatoria, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy++;
         JCheckBox chkPromocionable = new JCheckBox("¿Es promocionable?");
         chkPromocionable.setSelected(false);
         panel.add(chkPromocionable, gbc);
@@ -140,16 +129,6 @@ public class TablaMateria extends JPanel {
 
         // Acción cuando cambia el estado del checkbox
         chkPromocionable.addActionListener(e -> txtNotaPromocion.setEnabled(chkPromocionable.isSelected()));
-
-        gbc.gridx = 0;
-        gbc.gridy++;
-        panel.add(new JLabel("Carrera:"), gbc);
-        gbc.gridx = 1;
-        JComboBox<Carrera> cbCarrera = new JComboBox<>();
-        for (Carrera carrera : carreraController.obtenerCarreras()) {
-            cbCarrera.addItem(carrera);
-        }
-        panel.add(cbCarrera, gbc);
 
         gbc.gridx = 0;
         gbc.gridy++;
@@ -180,17 +159,15 @@ public class TablaMateria extends JPanel {
                 String nombre = txtNombre.getText();
                 String codigo = txtCodigo.getText();
                 int nroCuatrimestre = Integer.parseInt(txtCuatrimestre.getText());
-                boolean obligatoria = cbObligatoria.getSelectedItem().equals("Sí");
                 boolean esPromocionable = chkPromocionable.isSelected();
                 int notaPromocion = esPromocionable ? Integer.parseInt(txtNotaPromocion.getText()) : -1;
-                Carrera carreraSeleccionada = (Carrera) cbCarrera.getSelectedItem();
 
                 List<Materia> materiasCorrelativas = listCorrelativas.getSelectedValuesList();
 
                 if (esPromocionable) {
-                    materiaController.agregarMateria(nombre, codigo, nroCuatrimestre, obligatoria, carreraSeleccionada, materiasCorrelativas, notaPromocion);
+                    materiaController.agregarMateria(nombre, codigo, nroCuatrimestre, materiasCorrelativas, notaPromocion);
                 } else {
-                    materiaController.agregarMateria(nombre, codigo, nroCuatrimestre, obligatoria, carreraSeleccionada, materiasCorrelativas);
+                    materiaController.agregarMateria(nombre, codigo, nroCuatrimestre, materiasCorrelativas);
                 }
 
                 mostrarMaterias();

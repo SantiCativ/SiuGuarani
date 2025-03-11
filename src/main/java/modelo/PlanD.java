@@ -14,8 +14,8 @@ public class PlanD implements PlanEstudio {
     @Override
     public boolean puedeCursar(Alumno alumno, Materia materia) {
 
-        return (materia.convertirCursadasAMaterias(alumno.getCursadasAprobadas()).containsAll(materia.getCorrelativasRegularesPrev(cuatrimestrePrev)))
-                && (materia.convertirCursadasAMaterias(alumno.getMateriasAprobadas()).containsAll(materia.getCorrelativasAprobadasPrev(cuatrimestrePrev)));
+        return (alumno.convertirCursadasAMaterias(alumno.getCursadasAprobadas()).containsAll(materia.getCorrelativasRegularesPrev(cuatrimestrePrev)))
+                && (alumno.convertirCursadasAMaterias(alumno.getMateriasAprobadas()).containsAll(materia.getCorrelativasAprobadasPrev(cuatrimestrePrev)));
     }
 
     @Override

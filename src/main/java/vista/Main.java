@@ -2,8 +2,6 @@
 package vista;
 
 import controlador.CarreraController;
-import controlador.InscripcionController;
-
 import controlador.MateriaController;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -30,26 +28,79 @@ public class Main extends javax.swing.JFrame {
     private PlanEstudio[] opcionesPlanes;
     private MateriaController materiaController;
     private CarreraController carreraController;
-    private InscripcionController inscripcionController;
 
     public Main() {
         initComponents();
     }
 
     private void inicializarData() {
-        PlanEstudio pde = new PlanB();
-        Carrera analistaSistemas = new Carrera("Analista en sistemas", 2, pde);
-        Materia expresionDeAlgoritmos = new Materia("Expresión de Problemas y Algoritmos", "43243df", 1, true, analistaSistemas);
-        Materia programacion1 = new Materia("Programacion 1", "sdd23", 2, true, analistaSistemas);
-        programacion1.agregarCorrelativa(expresionDeAlgoritmos);
-        List<Materia> materiasObligatorias = new ArrayList();
-        materiasObligatorias.add(expresionDeAlgoritmos);
-        materiasObligatorias.add(programacion1);
-        analistaSistemas.setMateriasObligatorias(materiasObligatorias);
 
-        carreraController.agregarCarrera(analistaSistemas);
-        materiaController.agregarMateria(programacion1);
-        materiaController.agregarMateria(expresionDeAlgoritmos);
+        materiaController.agregarMateria("Álgebra", "MA045", 1, new ArrayList<Materia>(), 7);
+        materiaController.agregarMateria("Expresión de Problemas y Algoritmos", "IF002", 1, new ArrayList<Materia>(), 7);
+        materiaController.agregarMateria("Elementos de Informática", "IF001", 1, new ArrayList<Materia>(), 7);
+        materiaController.agregarMateria("Acreditación de Idioma Inglés", "0412", 1, new ArrayList<Materia>());
+
+        List<Materia> correlativasProg1 = new ArrayList();
+        correlativasProg1.add(materiaController.obtenerMateriaCodigo("IF002"));
+        materiaController.agregarMateria("Algorítmica y Programación I", "IF003", 2, correlativasProg1, 7);
+        materiaController.agregarMateria("Elementos de Lógica y Matemática Discreta", "MA008", 2, new ArrayList<Materia>(), 7);
+        materiaController.agregarMateria("Análisis Matemático", "MA046", 2, new ArrayList<Materia>(), 7);
+        List<Materia> correlativasADC = new ArrayList();
+        correlativasADC.add(materiaController.obtenerMateriaCodigo("IF001"));
+        correlativasADC.add(materiaController.obtenerMateriaCodigo("0412"));
+        materiaController.agregarMateria("Arquitectura de computadoras", "codigoadc", 3, correlativasADC);
+        List<Materia> correlativasSYO = new ArrayList();
+        correlativasSYO.add(materiaController.obtenerMateriaCodigo("0412"));
+        materiaController.agregarMateria("Sistemas y Organizaciones", "IF004", 3, correlativasSYO, 7);
+        List<Materia> correlativasprog2 = new ArrayList();
+        correlativasprog2.add(materiaController.obtenerMateriaCodigo("IF003"));
+        correlativasprog2.add(materiaController.obtenerMateriaCodigo("MA008"));
+        correlativasprog2.add(materiaController.obtenerMateriaCodigo("0412"));
+        materiaController.agregarMateria("Algorítmica y Programación II", "IF006", 3, correlativasprog2, 7);
+        List<Materia> correlativasesta = new ArrayList();
+        correlativasesta.add(materiaController.obtenerMateriaCodigo("MA045"));
+        correlativasesta.add(materiaController.obtenerMateriaCodigo("MA046"));
+        correlativasesta.add(materiaController.obtenerMateriaCodigo("0412"));
+        materiaController.agregarMateria("Estadística", "MA006", 3, correlativasesta);
+        List<Materia> correlativasBD1 = new ArrayList();
+        correlativasBD1.add(materiaController.obtenerMateriaCodigo("IF006"));
+        materiaController.agregarMateria("Bases de Datos I ", "IF007", 4, correlativasBD1, 8);
+        List<Materia> correlativaspoo = new ArrayList();
+        correlativaspoo.add(materiaController.obtenerMateriaCodigo("IF006"));
+        materiaController.agregarMateria("Programación y Diseño Orientado a Objetos", "IF030", 4, correlativaspoo);
+        List<Materia> correlativasingenieria1 = new ArrayList();
+        correlativasingenieria1.add(materiaController.obtenerMateriaCodigo("IF003"));
+        correlativasingenieria1.add(materiaController.obtenerMateriaCodigo("IF004"));
+        materiaController.agregarMateria("Ingeniería de Software I", "IF031", 4, correlativasingenieria1, 8);
+        List<Materia> correlativaslab = new ArrayList();
+        correlativaslab.add(materiaController.obtenerMateriaCodigo("IF006"));
+        materiaController.agregarMateria("Laboratorio de Programación y Lenguajes", "IF009", 5, correlativaslab);
+        List<Materia> correlativasingenieria2 = new ArrayList();
+        correlativasingenieria2.add(materiaController.obtenerMateriaCodigo("IF031"));
+        correlativasingenieria2.add(materiaController.obtenerMateriaCodigo("MA006"));
+        materiaController.agregarMateria("Ingeniería de Software II", "IF009", 5, correlativasingenieria2, 8);
+
+        List<Materia> correlativasconcurrencia = new ArrayList();
+        correlativasconcurrencia.add(materiaController.obtenerMateriaCodigo("IF031"));
+        correlativasconcurrencia.add(materiaController.obtenerMateriaCodigo("MA006"));
+        materiaController.agregarMateria("Introducción a la Concurrencia", "IF038", 5, correlativasconcurrencia, 7);
+
+        List<Materia> correlativaslabsoftware = new ArrayList();
+        correlativaslabsoftware.add(materiaController.obtenerMateriaCodigo("IF031"));
+        correlativaslabsoftware.add(materiaController.obtenerMateriaCodigo("IF030"));
+        correlativaslabsoftware.add(materiaController.obtenerMateriaCodigo("IF007"));
+        materiaController.agregarMateria("Laboratorio de Software", "IF055", 6, correlativaslabsoftware);
+
+        materiaController.agregarMateria("Curso(s) de Estrategias Comunicacionales que forma(n) parte del Seminario de Aspectos Legales y Profesionales I", "IF056", 6, new ArrayList<Materia>());
+
+        List<Materia> correlativasistemasoperativos = new ArrayList();
+        correlativasistemasoperativos.add(materiaController.obtenerMateriaCodigo("IF038"));
+        materiaController.agregarMateria("Sistemas Operativos", "0411", 6, correlativasistemasoperativos);
+
+        materiaController.agregarMateria("Robotica", "rbt", 6, new ArrayList<Materia>());
+        materiaController.agregarMateria("Ciberseguridad", "crb", 6, new ArrayList<Materia>());
+        materiaController.agregarMateria("Hacking Etico", "hcke", 6, new ArrayList<Materia>());
+
     }
 
     private void initPlanes() {
@@ -125,9 +176,4 @@ public class Main extends javax.swing.JFrame {
         CardLayout cardLayout = (CardLayout) panelContenedor.getLayout();
         cardLayout.show(panelContenedor, nombrePanel);  // Cambia entre los paneles
     }
-
-  /*ublic static void main(String[] args) {
-        java.awt.EventQueue.invokeLater(() -> new Main().setVisible(true));
-    }
-*/
 }

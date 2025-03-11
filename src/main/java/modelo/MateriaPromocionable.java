@@ -12,8 +12,8 @@ public class MateriaPromocionable extends Materia {
 
     private int notaPromocion;
 
-    public MateriaPromocionable(String nombre, String codigo, int nroCuatrimestre, boolean obligatoria, Carrera carrera, int notaPromocion) {
-        super(nombre, codigo, nroCuatrimestre, obligatoria, carrera);
+    public MateriaPromocionable(String nombre, String codigo, int nroCuatrimestre, int notaPromocion) {
+        super(nombre, codigo, nroCuatrimestre);
         this.notaPromocion = notaPromocion;
     }
 
@@ -22,6 +22,7 @@ public class MateriaPromocionable extends Materia {
         return "SI";
     }
 
+    @Override
     public int getNotaPromocion() {
         return this.notaPromocion;
     }

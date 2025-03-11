@@ -56,23 +56,25 @@ public class TablaCursadas {
             return;
         }
 
-        String[] columnas = {"Materia", "notaAprobarCursada", "notaAprobarFinal", "notaParcial", "notaFinal", "Acción"};
-        Object[][] datos = new Object[cursadas.size()][6];
+        String[] columnas = {"Materia", "promocionable", "notaAprobarPromocion", "notaAprobarCursada", "notaAprobarFinal", "notaParcial", "notaFinal", "Acción"};
+        Object[][] datos = new Object[cursadas.size()][8];
 
         for (int i = 0; i < cursadas.size(); i++) {
             Cursada cursada = cursadas.get(i);
             datos[i][0] = cursada.getMateria().getNombre();
-            datos[i][1] = cursada.getMateria().getNotaAprobarCursada();
-            datos[i][2] = cursada.getMateria().getNotaAprobarFinal();
-            datos[i][3] = cursada.getParcial();
-            datos[i][4] = cursada.getNotaFinal();
-            datos[i][5] = "Guardar";
+            datos[i][1] = cursada.getMateria().getPromocionable();
+            datos[i][2] = cursada.getMateria().getNotaPromocion();
+            datos[i][3] = cursada.getMateria().notaAprobarCursada;
+            datos[i][4] = cursada.getMateria().notaAprobarFinal;
+            datos[i][5] = cursada.getParcial();
+            datos[i][6] = cursada.getNotaFinal();
+            datos[i][7] = "Guardar";
         }
 
         DefaultTableModel modelo = new DefaultTableModel(datos, columnas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 3 || column == 4 || column == 5;
+                return column == 5 || column == 6 || column == 7;
             }
         };
 
@@ -134,8 +136,8 @@ public class TablaCursadas {
         @Override
         public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
             String nombre = (String) table.getValueAt(row, 0); // Obtener el nombre de la materia
-            notaCursada = Integer.parseInt(table.getValueAt(row, 3).toString());
-            notaFinal = Integer.parseInt(table.getValueAt(row, 4).toString());
+            notaCursada = Integer.parseInt(table.getValueAt(row, 5).toString());
+            notaFinal = Integer.parseInt(table.getValueAt(row, 6).toString());
             for (Cursada cursada : alumno.getCursadas()) {// Buscar la cursada
                 if (cursada.getMateria().getNombre().equals(nombre)) {
                     currentCursada = cursada;

@@ -43,8 +43,8 @@ public class TablaCarrera extends JPanel {
     private PlanEstudio[] opcionesPlanes;
 
     public TablaCarrera(PlanEstudio[] planes, MateriaController materiaControllerr, CarreraController carreraControllerr) {
-        materiaController = materiaControllerr;
-        carreraController = carreraControllerr;
+        this.materiaController = materiaControllerr;
+        this.carreraController = carreraControllerr;
         opcionesPlanes = planes;
         initComponents();
         mostrarCarreras();
@@ -148,8 +148,18 @@ public class TablaCarrera extends JPanel {
 
                     // Crear la carrera y guardarla
                     Carrera nuevaCarrera = new Carrera(nombre, numMateriasOpcionales, planSeleccionado);
+                    // Asignar materias a la carrera
                     nuevaCarrera.setMateriasObligatorias(materiasObligatorias);
                     nuevaCarrera.setMateriasOpcionales(materiasOpcionales);
+
+                    // Ahora, asignamos la carrera a las materias
+                    for (Materia materia : materiasObligatorias) {
+                        materia.setCarreras(nuevaCarrera);
+                    }
+
+                    for (Materia materia : materiasOpcionales) {
+                        materia.setCarreras(nuevaCarrera);
+                    }
 
                     carreraController.agregarCarrera(nuevaCarrera);
                     mostrarCarreras();

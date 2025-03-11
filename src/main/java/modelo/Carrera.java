@@ -6,7 +6,6 @@ package modelo;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 import modelo.Alumno;
 import modelo.PlanEstudio;
 
@@ -29,6 +28,14 @@ public class Carrera {
         this.pde = plan;
         this.materiasObligatorias = new ArrayList<>();
         this.materiasOpcionales = new ArrayList<>();
+    }
+
+    public Carrera(String nombre, int materiasOpcionales, PlanEstudio plan, List<Materia> obligatorias, List<Materia> opcionales) {
+        this.nombre = nombre;
+        this.cantMateriasOpcionales = materiasOpcionales;
+        this.pde = plan;
+        this.setMateriasObligatorias(obligatorias);
+        this.setMateriasOpcionales(opcionales);
     }
 
     // Getters y Setters
@@ -79,10 +86,6 @@ public class Carrera {
             }
         }
         return materiasDisponibles;
-    }
-
-    public void crearInscripcion(Alumno alumno) {
-        Inscripcion inscripcion = new Inscripcion(this, alumno);
     }
 
     public void setMateriasObligatorias(List<Materia> materiasObligatorias) {

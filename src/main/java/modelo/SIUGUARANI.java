@@ -5,7 +5,6 @@ package modelo;
 
 
 import javax.swing.SwingUtilities;
-import vista.index;
 import vista.Main;
 
 /**

@@ -20,7 +20,7 @@ public class PlanB implements PlanEstudio {
 
     public boolean puedeCursar(Alumno alumno, Materia materia) {
 
-        return materia.convertirCursadasAMaterias(alumno.getMateriasAprobadas()).containsAll(materia.getCorrelativas());
+        return alumno.convertirCursadasAMaterias(alumno.getMateriasAprobadas()).containsAll(materia.getCorrelativas());
     }
 
     @Override

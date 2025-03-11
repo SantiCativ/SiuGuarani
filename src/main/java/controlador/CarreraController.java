@@ -5,6 +5,7 @@
 package controlador;
 
 import java.util.ArrayList;
+import java.util.List;
 import modelo.Carrera;
 import modelo.Materia;
 import modelo.PlanEstudio;
@@ -23,8 +24,12 @@ public class CarreraController {
         listaCarreras.add(nuevaCarrera);
     }
 
-    public void agregarCarrera(Carrera carrera) {
+    public void agregarCarrera(String nombre, int materiasOpcionales, PlanEstudio plan, List<Materia> obligatorias, List<Materia> opcionales) {
+        Carrera nuevaCarrera = new Carrera(nombre, materiasOpcionales, plan, obligatorias, opcionales);
+        listaCarreras.add(nuevaCarrera);
+    }
 
+    public void agregarCarrera(Carrera carrera) {
         listaCarreras.add(carrera);
     }
 

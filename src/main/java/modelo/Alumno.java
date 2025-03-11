@@ -6,10 +6,10 @@ package modelo;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import javax.swing.JOptionPane;
 import modelo.Cursada;
 
 /**
@@ -22,11 +22,10 @@ public class Alumno {
     private final int legajo;
     private String nombre;
     private String apellido;
-    private boolean graduado;
     private List<Cursada> cursadas;
     private Set<Cursada> cursadasAprobadas;
     private Set<Cursada> materiasAprobadas;
-    private List<Inscripcion> inscripciones;
+    private List<Carrera> carreras;
 
     // Constructor
     public Alumno(String nombre, String apellido) {
@@ -34,10 +33,10 @@ public class Alumno {
         contadorLegajo++;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.inscripciones = new ArrayList<>();
+        this.carreras = new ArrayList<>();
         this.cursadas = new ArrayList<>();
-        this.cursadasAprobadas = new HashSet<>();;
-        this.materiasAprobadas = new HashSet<>();;
+        this.cursadasAprobadas = new HashSet<>();
+        this.materiasAprobadas = new HashSet<>();
     }
 
     // Getters y Setters
@@ -53,8 +52,8 @@ public class Alumno {
         return this.apellido;
     }
 
-    public List<Inscripcion> getInscripciones() {
-        return this.inscripciones;
+    public List<Carrera> getCarreras() {
+        return this.carreras;
     }
 
     public List<Cursada> getCursadas() {
@@ -69,35 +68,37 @@ public class Alumno {
         return this.materiasAprobadas;
     }
 
-    public int getMateriasObligatoriasAprobadas() {
-        var cantidad = 0;
+    public int getMateriasOpcionalesAprobadas(Carrera carrera) {
+        if (carrera == null) {
+            return 0; // Si la carrera es nula, no hay opcionales aprobadas
+        }
 
-        for (Cursada cursada : getCursadasAprobadas()) {
-            if (cursada.getMateria().getObligatoria().equals("SI")) {
-                cantidad++;
+        Set<Materia> materiasAprobadas = convertirCursadasAMaterias(getMateriasAprobadas());
+        if (materiasAprobadas == null || materiasAprobadas.isEmpty()) {
+            return 0; // Si el alumno no tiene materias aprobadas, retorna 0
+        }
+
+        List<Materia> materiasOpcionales = carrera.getMateriasOpcionales();
+        if (materiasOpcionales == null || materiasOpcionales.isEmpty()) {
+            return 0; // Si la carrera no tiene materias opcionales, retorna 0
+        }
+
+        /* no funciono asi:
+            // Crea una copia para no modificar el original y retiene solo las opcionales aprobadas
+            Set<Materia> opcionalesAprobadas = new HashSet<>(materiasAprobadas);
+            opcionalesAprobadas.retainAll(materiasOpcionales);
+         */
+        Set<Materia> opcionalesAprobadas = new HashSet<>();
+        for (Materia materia : materiasAprobadas) {
+            if (materiasOpcionales.contains(materia)) {
+                opcionalesAprobadas.add(materia);
             }
         }
-        return cantidad;
+        return opcionalesAprobadas.size();
     }
 
     public void setCursadas(Cursada cursada) {
         this.cursadas.add(cursada);
-    }
-
-    public void addCursadaAprobada(Cursada cursada) {
-        this.cursadasAprobadas.add(cursada);
-    }
-
-    public void addMateriaAprobada(Cursada cursada) {
-        this.materiasAprobadas.add(cursada);
-    }
-
-    public List<Carrera> getCarrerasRealizadas() {
-        List<Carrera> carreras = new ArrayList<>();
-        for (Inscripcion inscripcion : inscripciones) {
-            carreras.add(inscripcion.getCarrera());
-        }
-        return carreras;
     }
 
     public void setNombre(String nombre) {
@@ -108,14 +109,27 @@ public class Alumno {
         this.apellido = apellido;
     }
 
-    public void inscribirseEnCarrera(Carrera carrera) {
-        Inscripcion inscripcion = new Inscripcion(carrera, this);
-        inscripciones.add(inscripcion);
+    public void setCarrera(Carrera carrera) {
+        this.carreras.add(carrera);
+    }
+
+    public void addCursadaAprobada(Cursada cursada) {
+        this.cursadasAprobadas.add(cursada);
+    }
+
+    public void addMateriaAprobada(Cursada cursada) {
+        this.materiasAprobadas.add(cursada);
+    }
+
+    public Set<Materia> convertirCursadasAMaterias(Set<Cursada> cursadas) {
+        return cursadas.stream()
+                .map(Cursada::getMateria) // Extrae la materia de cada cursada
+                .collect(Collectors.toSet()); // Devuelve un conjunto de materias
     }
 
     public boolean recibido(Carrera carrera) {
-        return cursadasAprobadas.containsAll(carrera.getMateriasObligatorias())
-                && getMateriasObligatoriasAprobadas() >= carrera.getNumeroMateriasOpcionales();
+        return convertirCursadasAMaterias(materiasAprobadas).containsAll(carrera.getMateriasObligatorias())
+                && getMateriasOpcionalesAprobadas(carrera) >= carrera.getNumeroMateriasOpcionales();
     }
 
 }

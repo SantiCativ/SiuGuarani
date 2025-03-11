@@ -4,7 +4,6 @@
  */
 package modelo;
 
-
 /**
  *
  * @author cativ
@@ -41,19 +40,10 @@ public class Cursada {
         if (notaParcial >= materia.notaAprobarCursada) {
             alumno.addCursadaAprobada(this);
         }
-        
 
         if (notaFinal >= materia.notaAprobarFinal) {
             alumno.addMateriaAprobada(this);
         }
-    }
-
-    public boolean aproboCursada() {
-        return (this.notaParcial >= materia.getNotaAprobarCursada());
-    }
-
-    public boolean aproboFinal() {
-        return (this.notaFinal >= materia.getNotaAprobarFinal());
     }
 
     public int getNotaFinal() {
@@ -67,7 +57,5 @@ public class Cursada {
     public Materia getMateria() {
         return this.materia;
     }
-
-    
 
 }
